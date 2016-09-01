@@ -134,11 +134,14 @@ class TaggablePSR6PoolAdapter implements TaggablePoolInterface
      */
     public function deleteItems(array $keys)
     {
+        $deleted = true;
         foreach ($keys as $key) {
-            $this->preRemoveItem($key);
+            if (!$this->deleteItem($key)) {
+                $deleted = false;
+            }
         }
 
-        return $this->cachePool->deleteItems($keys);
+        return $deleted;
     }
 
     /**
